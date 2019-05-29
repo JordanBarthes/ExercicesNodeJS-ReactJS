@@ -1,0 +1,16 @@
+.App {
+  	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 80vh;
+}
+
+.form {
+    border: 5px solid rgb(65, 188, 209);
+    border-radius: 10px;
+    padding: 60px;
+}
+
+.form > input {
+     font-size: 2em;
+}
