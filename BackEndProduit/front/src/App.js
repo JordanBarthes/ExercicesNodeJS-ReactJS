@@ -7,7 +7,8 @@ function App() {
 	const [state, setState] = useState({
 		file: {},
 		isUploadedSuccess: false,
-		isUploadedError: false
+		isUploadedError: false,
+		isloading: false
 	});
 
 	const send = () => {
@@ -21,14 +22,20 @@ function App() {
 	};
 
 	const resetNotification = () => {
-		setState({ isUploadedError: false, isUploadedSuccess: false });
+		setState({
+			...state,
+			isUploadedError: false,
+			isUploadedSuccess: false,
+			isloading: false
+		});
 	};
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
+		setState({ ...state, isloading: true });
 		send()
-			.then(() => setState({ isUploadedSuccess: true }))
-			.catch(() => setState({ isUploadedError: true }));
+			.then(() => setState({ ...state, isUploadedSuccess: true }))
+			.catch(() => setState({ ...state, isUploadedError: true }));
 	};
 
 	const onChange = (e) => setState({ file: e.target.files[0] });
@@ -43,7 +50,9 @@ function App() {
 			/>
 			<form className="form" onSubmit={handleSubmit}>
 				<input onChange={onChange} type="file" name="file" required />
-				<button type="submit">Valider</button>
+				<button type="submit" disabled={state.isloading}>
+					Valider
+				</button>
 			</form>
 		</div>
 	);
