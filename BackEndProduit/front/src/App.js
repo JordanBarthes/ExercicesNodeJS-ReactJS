@@ -4,7 +4,7 @@ import './App.css';
 function App() {
 	const [state, setState] = useState();
 
-	const send = (state) => {
+	const send = () => {
 		let formData = new FormData();
 		formData.append('file', state);
 
@@ -12,14 +12,16 @@ function App() {
 			method: 'POST',
 			body: formData
 		}).then(
-			(res) => console.log('File saved'),
-			(err) => console.log('Error')
+			(res) => {
+				console.log(res);
+			},
+			(err) => console.log(err)
 		);
 	};
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		send(state);
+		send();
 	};
 
 	return (

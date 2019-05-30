@@ -34,7 +34,7 @@ var storage = multer.diskStorage({
 const upload = multer({ storage });
 
 app.post('/upload', upload.single('file'), function(req, res, next) {
-	console.log('File saved');
+    res.status(200).send('File saved');
 });
 
 server.listen(port, () => console.log(`Listening on port ${port}`));
