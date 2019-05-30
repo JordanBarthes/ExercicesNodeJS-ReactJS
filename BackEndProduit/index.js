@@ -2,9 +2,12 @@ var express = require('express');
 var http = require('http');
 var multer = require('multer');
 var fs = require('fs');
+var cors = require('cors');
 var port = 3001;
 
 var app = express();
+
+app.use(cors());
 
 var server = http.createServer(app);
 
