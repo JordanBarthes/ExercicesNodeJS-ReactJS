@@ -49,7 +49,16 @@ function App() {
 				resetNotification={resetNotification}
 			/>
 			<form className="form" onSubmit={handleSubmit}>
-				<input onChange={onChange} type="file" name="file" required />
+				<label htmlFor="my-file" className="label">
+					Select a file...
+				</label>
+				<input
+					onChange={onChange}
+					type="file"
+					id="my-file"
+					name="file"
+					required
+				/>
 				<button type="submit" disabled={state.isloading}>
 					Valider
 				</button>
