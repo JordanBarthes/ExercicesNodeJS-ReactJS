@@ -1,39 +1,49 @@
 import React, { useState } from 'react';
+import Notification from './Notification';
+import { ToastContainer } from 'react-toastify';
 import './App.css';
 
 function App() {
-	const [state, setState] = useState();
+	const [state, setState] = useState({
+		file: {},
+		isUploadedSuccess: false,
+		isUploadedError: false
+	});
 
 	const send = () => {
 		let formData = new FormData();
-		formData.append('file', state);
+		formData.append('file', state.file);
 
-		fetch(`http://localhost:3001/upload`, {
+		return fetch(`http://localhost:3001/upload`, {
 			method: 'POST',
 			body: formData
-		}).then(
-			(res) => {
-				console.log(res);
-			},
-			(err) => console.log(err)
-		);
+		});
+	};
+
+	const resetNotification = () => {
+		setState({ isUploadedError: false, isUploadedSuccess: false });
 	};
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		send();
+		send()
+			.then(() => setState({ isUploadedSuccess: true }))
+			.catch(() => setState({ isUploadedError: true }));
 	};
+
+	const onChange = (e) => setState({ file: e.target.files[0] });
 
 	return (
 		<div className="App">
+			<ToastContainer />
+			<Notification
+				notificationUpload={state.isUploadedSuccess}
+				notificationError={state.isUploadedError}
+				resetNotification={resetNotification}
+			/>
 			<form className="form" onSubmit={handleSubmit}>
-				<input
-					onChange={(e) => setState(e.target.files[0])}
-					type="file"
-					name="file"
-					required
-				/>
-				<input type="submit" />
+				<input onChange={onChange} type="file" name="file" required />
+				<button type="submit">Valider</button>
 			</form>
 		</div>
 	);

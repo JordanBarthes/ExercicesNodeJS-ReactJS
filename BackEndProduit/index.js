@@ -1,24 +1,23 @@
-var express = require('express');
-var http = require('http');
-var multer = require('multer');
-var fs = require('fs');
-var cors = require('cors');
-var port = 3001;
+const express = require('express');
+const http = require('http');
+const multer = require('multer');
+const fs = require('fs');
+const cors = require('cors');
+const port = 3001;
 
-var app = express();
+const app = express();
 
 app.use(cors());
 
-var server = http.createServer(app);
+const server = http.createServer(app);
 
-var storage = multer.diskStorage({
+const storage = multer.diskStorage({
 	destination: function(req, file, callback) {
 		if (fs.existsSync(`./upload/${file.originalname}`)) {
+			const re = /(?:\.([^.]+))?$/;
+			const ext = re.exec(file.originalname)[1];
+			const filename = `${file.originalname}`.replace(`.${ext}`, '');
 			let id = 1;
-			var re = /(?:\.([^.]+))?$/;
-			var ext = re.exec(file.originalname)[1];
-			let filename = `${file.originalname}`.replace(`.${ext}`, '');
-
 			while (fs.existsSync(`./upload/${filename}(${id}).${ext}`)) {
 				id++;
 			}
@@ -34,7 +33,7 @@ var storage = multer.diskStorage({
 const upload = multer({ storage });
 
 app.post('/upload', upload.single('file'), function(req, res, next) {
-    res.status(200).send('File saved');
+	res.status(200).send('File saved');
 });
 
 server.listen(port, () => console.log(`Listening on port ${port}`));
